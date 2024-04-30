@@ -1,0 +1,19 @@
+﻿<Application x:Class="IoTControl.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:IoTControl"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="\ui\styles\mainstyle.xaml" />
+                <ResourceDictionary Source="\ui\styles\CustomToggleButtonFrom.xaml" />
+                <ResourceDictionary Source="\ui\styles\CustomToggleButtonTo.xaml" />
+                <ResourceDictionary Source="\ui\styles\CustomComboBox.xaml" />
+                <ResourceDictionary Source="\ui\styles\CustomButton.xaml" />
+                <ResourceDictionary Source="\ui\styles\CustomCheckBoxTB.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

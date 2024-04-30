@@ -1,0 +1,26 @@
+﻿<Window x:Class="IoTControl.VisualizationRobotWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IoTControl"
+        mc:Ignorable="d"
+        Title="VisualizationRobotWindow" Height="622" Width="666" ResizeMode="NoResize"> <!--width был 650 а height 600 но я ненавижу microsoft(как и они меня) поэтому окно открывается неровно-->
+    <Grid>
+        <TextBlock x:Name="tb_Xcoordinate" Text="X" HorizontalAlignment="Center" Width="650"/>
+        <TextBlock x:Name="tb_Ycoordinate" Text="Y" Margin="0,20,0,469" HorizontalAlignment="Center" Width="650"/>
+        <Button x:Name="button_RemoveLine" Click="button_RemoveLine_Click" Width="160" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,550,0,0"> Убрать/вернуть линии </Button>
+        <Canvas>
+            <Ellipse Width="26" Height="26" Fill="DarkSlateGray" Canvas.Left="312" Canvas.Top="279" HorizontalAlignment="Center" VerticalAlignment="Center"></Ellipse>
+            <Line x:Name="L1" X1="0" Y1="0" X2="650" Y2="584" Stroke="DimGray"></Line>
+            <Line x:Name="L2" X1="650" Y1="0" X2="0" Y2="584" Stroke="DimGray"></Line>
+            <Line x:Name="L3" X1="325" Y1="0" X2="325" Y2="584" Stroke="DimGray"></Line>
+            <Line x:Name="L4" X1="650" Y1="292" X2="0" Y2="292" Stroke="DimGray"></Line>
+
+            <!--<Ellipse Width="12" Height="12" Fill="DarkViolet" Canvas.Left="319" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Center"></Ellipse>-->
+            <Ellipse x:Name="EllipseToRobot" Width="12" Height="12" Fill="DarkViolet" Canvas.Left="319" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Center"></Ellipse>
+            <Line x:Name="LineToRobot" X1="325" Y1="291" X2="325" Y2="230" Stroke="GreenYellow"></Line>
+
+        </Canvas>
+    </Grid>
+</Window>

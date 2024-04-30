@@ -1,0 +1,14 @@
+﻿<Window x:Class="IoTControl.VisualizationBarcodeReaderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IoTControl"
+        mc:Ignorable="d"
+        Title="VisualizationBarcodeReaderWindow" Height="200" Width="300">
+    <Grid>
+        <Label>Code</Label>
+        <Label x:Name="labelCode" Content="" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="70"/>
+
+    </Grid>
+</Window>
