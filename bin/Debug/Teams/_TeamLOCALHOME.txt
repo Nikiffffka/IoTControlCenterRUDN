@@ -1,6 +1,0 @@
-192.168.0.99:8080;57338485-ef28-4f63-bbd9-e09825c554da;
-M;11;192.168.0.196;8888;Robot_1;InOut;
-P;13;192.168.0.13;8888;Robot_2;InOut;
-T;12;192.168.0.12;8888;TraficLight1;InOut;
-T;14;192.168.0.14;8888;TraficLight2;InOut;
-R2;15;192.168.0.15;8888;RemoteTerminall;InOut;
