@@ -24,7 +24,7 @@ namespace IoTControl
 
 		List<IoT> ListBarcode = new List<IoT>();
 
-		List<Team> Teams = new List<Team>();
+		List<Area> Teams = new List<Area>();
 		List<InputControlWlegend> InputControl = new List<InputControlWlegend>();
 
 
@@ -38,10 +38,10 @@ namespace IoTControl
 			Connections.MonCommand += NowNewCommand;
 			Connections.LogCommand += NowNewCommandToLog;
 
-			Teams = TeamLoadManager.LoadTeams();
+			Teams = AreaLoadManager.LoadAreas();
 
 			List<string> ListForTeams = new List<string>(); 
-            foreach (Team team in Teams)
+            foreach (Area team in Teams)
             {
 				TeamsList.Items.Add(team.Name);
 			}
