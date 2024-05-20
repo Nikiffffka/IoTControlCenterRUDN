@@ -182,10 +182,12 @@ namespace IoTControl
 				ChangeKeyValue(Connections.Things[ThingsList.SelectedIndex]);
 				if (Connections.Things[ThingsList.SelectedIndex].firstLetter == "g" || Connections.Things[ThingsList.SelectedIndex].firstLetter == "p")
 				{
+					tb_insteadChart.Text = "";
 					chart_Monitoring.Visibility = Visibility.Visible;
 				}
 				else
 				{
+					tb_insteadChart.Text = "Нет мониторинговых данных\nИли\nМониторинг представлен в визуализации";
 					chart_Monitoring.Visibility = Visibility.Hidden;
 				}
 			}

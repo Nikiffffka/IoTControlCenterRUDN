@@ -114,10 +114,12 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock HorizontalAlignment="Left" Width="115" Text="Мониторинг" />
+                <TextBlock HorizontalAlignment="Left" Width="115" Text="Мониторинг" x:Name="tb_monitoringLeftText" />
                 <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Name="cb_paramMon" Width="104" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" SelectedIndex = "0" SelectionChanged="cb_paramMon_SelectionChanged" />
 
                 <TextBlock HorizontalAlignment="Left"  Text="{Binding igetit}" Grid.Row="0" Margin="100,0,0,0" x:Name="tb_monitoring"/>
+
+                <TextBlock Text="" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="tb_insteadChart" FontSize="24" TextAlignment="Center"/>
 
                 <lvc:CartesianChart Grid.Row="1" x:Name="chart_Monitoring"
                     SyncContext="{Binding Sync}"

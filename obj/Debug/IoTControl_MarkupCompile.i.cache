@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\User\source\repos\IoTControlCenterRUDN\obj\Debug\
+C:\Users\daniilnikiforov\Source\Repos\IoTControlCenterRUDN\obj\Debug\
 IoTControl
 none
 false
 DEBUG;TRACE
-C:\Users\User\source\repos\IoTControlCenterRUDN\App.xaml
+C:\Users\daniilnikiforov\Source\Repos\IoTControlCenterRUDN\App.xaml
 13970194518
-10-1294380482
+10-1890592694
 23-1195212780
-142-1840066719
+142-67320209
 MainWindow.xaml;UI\Styles\CustomButton.xaml;UI\Styles\CustomCheckBoxTB.xaml;UI\Styles\CustomComboBox.xaml;UI\Styles\CustomToggleButtonTo.xaml;UI\Styles\CustomToggleButtonFrom.xaml;UI\Styles\MainStyle.xaml;VisualizationWindow\VisualizationAnotherWindow.xaml;VisualizationWindow\VisualizationBarcodeReaderWindow.xaml;VisualizationWindow\VisualizationRemoteTerminalWindow.xaml;VisualizationWindow\VisualizationRobotWindow.xaml;VisualizationWindow\VisualizationSmartCameraWindow.xaml;VisualizationWindow\VisualizationTrafficLightWindow.xaml;
 
 True
