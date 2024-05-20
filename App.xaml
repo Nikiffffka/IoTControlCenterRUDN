@@ -12,7 +12,6 @@
                 <ResourceDictionary Source="\ui\styles\CustomComboBox.xaml" />
                 <ResourceDictionary Source="\ui\styles\CustomButton.xaml" />
                 <ResourceDictionary Source="\ui\styles\CustomCheckBoxTB.xaml" />
-
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

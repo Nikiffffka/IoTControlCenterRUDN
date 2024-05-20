@@ -85,7 +85,11 @@ namespace IoTControl.Core
 		{
 			var Data = new Dictionary<string, string>();
 
-			Debug.WriteLine(Subs[0].Length);
+
+			Debug.WriteLine("SUBS ", Subs.ToString());
+			Debug.WriteLine("SUBS[0] ", Subs[0]);
+			Debug.WriteLine("SUBS[0].Length ", Subs[0].Length.ToString());
+			
 			for (int i = 0; i < Subs.Length - 1; i++)
 			{
 				var sub = Subs[i].Split(':');

@@ -10,6 +10,7 @@
         <TextBlock x:Name="tb_Xcoordinate" Text="X" HorizontalAlignment="Center" Width="650"/>
         <TextBlock x:Name="tb_Ycoordinate" Text="Y" Margin="0,20,0,469" HorizontalAlignment="Center" Width="650"/>
         <Button x:Name="button_RemoveLine" Click="button_RemoveLine_Click" Width="160" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,550,0,0"> Убрать/вернуть линии </Button>
+        <Button x:Name="button_CoordinateSwap" Click="button_CoordinateSwap_Click" Width="180" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="175,550,0,0"> Смена источника координат </Button>
         <Canvas>
             <Ellipse Width="26" Height="26" Fill="DarkSlateGray" Canvas.Left="312" Canvas.Top="279" HorizontalAlignment="Center" VerticalAlignment="Center"></Ellipse>
             <Line x:Name="L1" X1="0" Y1="0" X2="650" Y2="584" Stroke="DimGray"></Line>

@@ -19,7 +19,6 @@ namespace IoTControl.Core
 		public static EventHandler<Command> LogCommand;
         public static List<IoT> Things = new List<IoT>();
         public static List<Command> CommandList = new List<Command>();
-		public static DataForThingworx DFThx;
 
 		public static void Preload()
         {
@@ -41,12 +40,6 @@ namespace IoTControl.Core
 							if (CheckIinThings(i)){
 								Console.WriteLine("Things in thread " + i.name);
 								Command cmd = new Command();
-								if (Thingworx.ReceiveFromThx)
-								{
-									var temp = Thingworx.ReceiveFromThingworx(i);
-									cmd = new Command(new byte[0], temp.Result, i);
-									if (cmd != null) { AddCommandToMon(i, cmd); AddCommandToLog(i, cmd); }
-								}
 								cmd = i.UDP.ReceiveCommandAsync(i).Result;
 								if (cmd != null) { AddCommandToMon(i, cmd); AddCommandToLog(i, cmd); }
 							}
@@ -75,7 +68,7 @@ namespace IoTControl.Core
 		}
         internal static void AddCommandToMon(IoT ioT, Command cmd)
         {
-            CommandList.Add(cmd);
+			CommandList.Add(cmd);
 			MonCommand.Invoke(ioT, cmd);
         }
 		internal static void AddCommandToLog(IoT ioT, Command cmd)

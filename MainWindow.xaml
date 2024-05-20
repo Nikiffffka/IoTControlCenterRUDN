@@ -2,11 +2,20 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:UI="clr-namespace:IoTControl.UI"
-    x:Class="IoTControl.MainWindow"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:UI="clr-namespace:IoTControl.UI"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+        xmlns:iotcore="clr-namespace:IoTControl.Core"
+        x:Class="IoTControl.MainWindow"
         mc:Ignorable="d"
         Title="IoT control center" Height="430" Width="1010" MinHeight="430" MinWidth="1010"
         Background="{StaticResource BacgroundColor}">
+   
+    <Window.DataContext>
+        <iotcore:ViewModelChart/>
+    </Window.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="17*"/>
@@ -19,12 +28,13 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <UI:CardHolder  Grid.RowSpan="3"
-             Grid.Column="3">
+        <UI:CardHolder  Grid.Row="1" 
+            Grid.RowSpan="2"
+            Grid.Column="0">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <CheckBox x:Name="cb_log" HorizontalAlignment="Right" Style="{StaticResource CheckBoxForTB}" IsChecked="True" ToolTip="Включить автоспуск?" Margin="213,0,0,0"/>
                 <TextBlock Text="Журналирование" Margin="0,0,0,0" HorizontalAlignment="Left" Width="131"/>
@@ -44,10 +54,11 @@
                 <TextBlock Text="Управление" Margin="0,0,0,260" HorizontalAlignment="Left" Width="115" Grid.ColumnSpan="2"/>
                 <StackPanel Width="70" HorizontalAlignment="Left" x:Name="Container_parameters" Margin="27,82,0,0" Grid.ColumnSpan="2"/>
 
-                <ComboBox Style="{StaticResource ComboBoxFlatStyle}" x:Name="ThingsList" Width="104" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,29,0,0" Grid.ColumnSpan="2" SelectedIndex = "0" SelectionChanged="ThingsList_SelectionChanged" />
+                <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Name="ThingsList" Width="104" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,29,0,0" Grid.ColumnSpan="2" SelectedIndex = "0" SelectionChanged="ThingsList_SelectionChanged" />
                 <Button Style ="{StaticResource CustomButton}" x:Name="button_SendDataTo" VerticalAlignment="Top"
-                        HorizontalAlignment="Left" Margin="10,44,0,0" Click="SendDataToRobot" Grid.ColumnSpan="2" Width="105">Отправка
-                </Button>
+                        HorizontalAlignment="Left" Margin="10,44,0,0" Click="SendDataToRobot" Grid.ColumnSpan="2" Width="105" Content="Отправка"/>
+                <!-- ДА -->
+
                 <!--Кнопки для отправки на выбранную вещь-->
                 <Button Style ="{StaticResource CustomButton}" x:Name="button_SendOne" VerticalAlignment="Top"
                     HorizontalAlignment="Left" Margin="27,19,0,0" Click="SendNumberForThing"  Width="122" Content="Start position(1)" Tag="1" Grid.Column="1"/>
@@ -69,8 +80,7 @@
                 <Image x:Name="RemoteTerminalImageThing" Source="Sources/Things/RemoteTerminal.png"  Grid.Column="1" Margin="10,159,6,111" Visibility="Hidden"/>
                 <Image x:Name="SmartCameraImageThing" Source="Sources/Things/SmartCamera.jpg"  Grid.Column="1" Margin="10,159,6,111" Visibility="Hidden"/>
                 <Image x:Name="TrafficLightImageThing" Source="Sources/Things/TrafficLight.png" Grid.Column="1" Margin="10,159,6,111" Visibility="Hidden"/>
-                <!-- ДА -->
-                
+
             </Grid>
         </UI:CardHolder>
 
@@ -78,55 +88,44 @@
                 Grid.Row="0"
                 Grid.Column="0" >
             <Grid>
-                <TextBlock Text="Настройки" Margin="0,0,0,0" HorizontalAlignment="Left" Width="131"/>
+                <Button Style ="{StaticResource CustomButton}" x:Name="button_SendRforAll" VerticalAlignment="Top"
+                    HorizontalAlignment="Left" Margin="0,50,0,0" Click="SendForAll"  Width="100" Content="R для всех" Tag="r"/>
+                <Button Style ="{StaticResource CustomButton}" x:Name="button_SendSforAll" VerticalAlignment="Top"
+                    HorizontalAlignment="Left" Margin="0,75,0,0" Click="SendForAll"  Width="100" Content="S для всех" Tag="s" />
+
+                <TextBlock Text="Панель подключения" Margin="0,0,0,0" HorizontalAlignment="Left" Width="131" Height="20" VerticalAlignment="Top"/>
+
                 <TextBox x:Name="tb_serverIP" HorizontalAlignment="Left" Margin="95,24,0,0" TextWrapping="NoWrap" Text="ServerIP:port" VerticalAlignment="Top" Width="120"/>
                 <TextBox x:Name="tb_appKey" HorizontalAlignment="Left" Margin="95,47,0,0" TextWrapping="NoWrap" Text="AppKey" VerticalAlignment="Top" Width="120"/>
                 <!-- <Button x:Name="tb_gear" Style="{StaticResource ImageButton_Tool}" ToolTip="Синхронизация с базой" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="142,20,0,0"> <Image Source="/Sources/Icons/icons8-gear.png"/> </Button>-->
 
                 <Button Style ="{StaticResource CustomButton}" x:Name="button_SaveDataForConnectToThingworx" VerticalAlignment="Top"
-                HorizontalAlignment="Left" Margin="102,65,0,0" Click="SaveDataForConnectToThingworx"  Width="106" Content="Изменить"/>
+                HorizontalAlignment="Left" Margin="102,65,0,0"  Width="106" Content="Изменить"/>
                 <ComboBox Style="{StaticResource ComboBoxFlatStyle}" x:Name="TeamsList" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,24,0,0" SelectedIndex = "0" SelectionChanged="TeamsList_SelectionChanged" />
             </Grid>
         </UI:CardHolder>
-        <UI:CardHolder
-                 Grid.Column="0"  Grid.Row="2">
-            <Grid>
-                <TextBlock Text="BarcodeReader Emulator" Margin="0,0,0,81" HorizontalAlignment="Left" Width="131"/>
-                <TextBox x:Name="textBox_Barcode" Margin="16,35,0,0" Height="18" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <Button Style ="{StaticResource CustomButton}" x:Name="button_SendCodeToThingworx" VerticalAlignment="Top"
-                    HorizontalAlignment="Left" Margin="4,65,0,0" Click="SendCodeToThingworx" Width="122" Content="Отправить код" />
-                <ComboBox Style="{StaticResource ComboBoxFlatStyle}" x:Name="BarcodeList" Width="105" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,35,0,0" SelectedIndex = "0" />
-            </Grid>
-        </UI:CardHolder>
-        <UI:CardHolder
-            Grid.Row="1"
-            Grid.Column="0" >
-            <Grid>
-                <TextBlock Text="Connect  Thingworx                 Robots" Margin="0,0,0,81" HorizontalAlignment="Left" Width="230" VerticalAlignment="Top"/>
-                <Button Style ="{StaticResource CustomButton}" x:Name="button_SendRforAll" VerticalAlignment="Top"
-                    HorizontalAlignment="Left" Margin="136,14,0,0" Click="SendForAll"  Width="94" Content="R для всех" Tag="r"/>
-                <Button Style ="{StaticResource CustomButton}" x:Name="button_SendSforAll" VerticalAlignment="Top"
-                    HorizontalAlignment="Left" Margin="136,50,0,0" Click="SendForAll"  Width="94" Content="S для всех" Tag="s" />
-                <ToggleButton Style="{StaticResource ComboBoxToggleButtonFrom}" Margin="0,24,94,55" x:Name="ToggleReceiveFromThingworx" Click="ToggleReceiveFromThingworx_Click"  Width="135" Height="25" 
-                              HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <ToggleButton Style="{StaticResource ComboBoxToggleButtonTo}" Margin="0,60,94,20" x:Name="ToggleReceiveToThingworx" Click="ToggleReceiveToThingworx_Click" Width="135" Height="25"
-                              HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            </Grid>
-        </UI:CardHolder>
 
-        <UI:CardHolder  Grid.RowSpan="3"
+
+        <UI:CardHolder  Grid.RowSpan="3" Grid.ColumnSpan="2"
             Grid.Column="2" >
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <CheckBox x:Name="cb_Monitoring" HorizontalAlignment="Right" Style="{StaticResource CheckBoxForTB}" IsChecked="True" ToolTip="Включить автоспуск?" Margin="213,0,0,0"/>
-                <TextBlock HorizontalAlignment="Left" Width="115" Text="Мониторинг" ></TextBlock>
-                <ScrollViewer x:Name="scroll_Monitoring" ScrollChanged="Monitoring_ScrollChanged" Grid.Row="1">
-                    <TextBlock x:Name="tb_Monitoring" TextWrapping="Wrap" Text="" TextTrimming="CharacterEllipsis" />
-                </ScrollViewer>
+
+                <TextBlock HorizontalAlignment="Left" Width="115" Text="Мониторинг" />
+                <ComboBox Style="{StaticResource ComboBoxFlatStyle}" Name="cb_paramMon" Width="104" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" SelectedIndex = "0" SelectionChanged="cb_paramMon_SelectionChanged" />
+
+                <TextBlock HorizontalAlignment="Left"  Text="{Binding igetit}" Grid.Row="0" Margin="100,0,0,0" x:Name="tb_monitoring"/>
+
+                <lvc:CartesianChart Grid.Row="1" x:Name="chart_Monitoring"
+                    SyncContext="{Binding Sync}"
+                    Series="{Binding Series}"
+                    XAxes="{Binding XAxes}" 
+                   >
+                </lvc:CartesianChart>
+
             </Grid>
         </UI:CardHolder>
     </Grid>

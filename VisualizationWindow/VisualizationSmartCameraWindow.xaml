@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="VisualizationSmartCameraWindow" Height="450" Width="800">
     <Grid>
-        <Label Content="Не знаю что здесь сделать (┬┬﹏┬┬)" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Content="Визуализация камеры на интерфейсе прошивки" FontSize="34" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>

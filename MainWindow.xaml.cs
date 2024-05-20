@@ -1,5 +1,7 @@
 ﻿using IoTControl.Core;
 using IoTControl.UI;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,10 +26,13 @@ namespace IoTControl
 
 		List<Team> Teams = new List<Team>();
 		List<InputControlWlegend> InputControl = new List<InputControlWlegend>();
-		public static DataForThingworx DFThx = new DataForThingworx();
+
+
 		public MainWindow()
         {
 			InitializeComponent();
+			App.Current.Properties["Thinglist"] = ThingsList.SelectedIndex;
+
 			robotProperties.InitProperty();
 
 			Connections.MonCommand += NowNewCommand;
@@ -35,23 +40,24 @@ namespace IoTControl
 
 			Teams = TeamLoadManager.LoadTeams();
 
-			Connections.DFThx = DFThx;
-
 			List<string> ListForTeams = new List<string>(); 
             foreach (Team team in Teams)
             {
 				TeamsList.Items.Add(team.Name);
 			}
 
-			tb_appKey.Text = DataForThingworx.AppKey;
-			tb_serverIP.Text = DataForThingworx.ServerIP;
+            for (int i = 1; i <= 6; i++)
+            {
+				cb_paramMon.Items.Add($"Motor {i}");
+			}
 
-            Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
+			Dispatcher.ShutdownStarted += Dispatcher_ShutdownStarted;
 			this.Closing += Dispatcher_ShutdownStarted; // ради интереса написал (просто после закрытия окна программа не всегда заканчивает работу) 
 
 		}
 
-        private void Dispatcher_ShutdownStarted(object sender, EventArgs e)
+
+		private void Dispatcher_ShutdownStarted(object sender, EventArgs e)
         {
             Connections.Close();
             Connections.MonCommand -= NowNewCommand;
@@ -65,14 +71,12 @@ namespace IoTControl
 			if (Connections.Things != null)	Connections.Close();
 
 			Connections.Things = Teams[TeamsList.SelectedIndex].IoTs;
-			DataForThingworx.ServerIP = Teams[TeamsList.SelectedIndex].ServerIP;
-			DataForThingworx.AppKey = Teams[TeamsList.SelectedIndex].Appkey;
-			tb_serverIP.Text = DataForThingworx.ServerIP;
-			tb_appKey.Text = DataForThingworx.AppKey;
+			tb_serverIP.Text = "Здесь должно быть только подключение к конкретной ячейке";
+			tb_appKey.Text = "Здесь должно быть только подключение к конкретной ячейке";
 
 			Connections.Start();
 
-			ListBarcode.Clear(); BarcodeList.Items.Clear(); ThingsList.Items.Clear(); 
+			ListBarcode.Clear(); ThingsList.Items.Clear(); 
 
 			foreach (IoT t in Teams[TeamsList.SelectedIndex].IoTs)				   
 			{																	   
@@ -80,45 +84,23 @@ namespace IoTControl
 				if (t.type == "B")												   
 				{
 					ListBarcode.Add(t);
-					BarcodeList.Items.Add(t.name);
 				}
 				ThingsList.Items.Add(t.name);
 
 			}
 			ThingsList.SelectedIndex = 0; ThingsList.SelectedItem = 0;
-			BarcodeList.SelectedIndex = 0; BarcodeList.SelectedItem = 0;
 			
 
 		}
 		public void NowNewCommand(object s,Command cmd)
         {
-            Dispatcher.Invoke(() =>
-            {
-				GetReceiveFromThingworx(cmd.Response, cmd.ThingSelf);
-				var valzxc = "";
-				if (cmd.Data != null && cmd.Data.Length < 4) cmd.Data = null;
-
-
-				if (cmd.Response == null) { }
-				else
-				{
-					foreach (var value in cmd.Response)
+				Dispatcher.Invoke(() =>
 					{
-						valzxc += value.ToString();
-					}
-					valzxc = "\n" + valzxc;
-				}
+						//chartik.ReadData();
+						tb_monitoring.Text = Connections.Things[ThingsList.SelectedIndex].name;
 
-				string textToMonitor = (cmd.Data != null ? cmd.ThingSelf.name + " " + cmd.Data + "\n" : "");
-				Debug.WriteLine(tb_log.Text.Length);
-
-				if (tb_Monitoring.Text.Length > 1000)
-					tb_Monitoring.Text = tb_Monitoring.Text.Substring(tb_Monitoring.Text.Length - 1000, 1000);
-
-				tb_Monitoring.Text += textToMonitor;
-
-			});
-        }
+					});
+		}
 
 		public void NowNewCommandToLog(object s, Command cmd)
 		{
@@ -141,7 +123,7 @@ namespace IoTControl
 				string textToLog = (cmd.ThingSelf.name + " " + cmd.Data + valzxc + "\n");
 				Debug.WriteLine(tb_log.Text.Length);
 
-				if (tb_log.Text.Length > 1000)
+				if (tb_log.Text.Length > 4000)
 					tb_log.Text = tb_log.Text.Substring(tb_log.Text.Length-1000, 1000); 
 			
 				tb_log.Text += textToLog;
@@ -193,11 +175,23 @@ namespace IoTControl
 
 		private void ThingsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			App.Current.Properties["Thinglist"] = ThingsList.SelectedIndex;
+			
 			if (ThingsList.SelectedItem != null) AddNewCommandToLog($"Выбрана вещь: {ThingsList.SelectedItem}");
-			if (ThingsList.SelectedIndex != -1)
+			if (ThingsList.SelectedIndex != -1) { 
 				ChangeKeyValue(Connections.Things[ThingsList.SelectedIndex]);
-			else
+				if (Connections.Things[ThingsList.SelectedIndex].firstLetter == "g" || Connections.Things[ThingsList.SelectedIndex].firstLetter == "p")
+				{
+					chart_Monitoring.Visibility = Visibility.Visible;
+				}
+				else
+				{
+					chart_Monitoring.Visibility = Visibility.Hidden;
+				}
+			}
+			else 
 				ChangeKeyValue(Connections.Things[0]);
+			
 		}
 		public void ChangeKeyValue(IoT things)
 		{
@@ -218,23 +212,8 @@ namespace IoTControl
 				InputControl.Add(temp);
 				Container_parameters.Children.Add(temp);
 			}
-		}
-		private void GetReceiveFromThingworx(Dictionary<string,string> Responce, IoT ThingSelf) 
-		{
-			if (ToggleReceiveFromThingworx.IsChecked == true)
-			{
-				foreach (var item in ThingSelf.ThingControl.Keys.ToList())
-				{
-					if (Responce.ContainsKey(item))
-					{
-						ThingSelf.ThingControl[item] = Responce[item];
-						if (Connections.Things[ThingsList.SelectedIndex] == ThingSelf)
-							ChangeKeyValue(ThingSelf);
-					}
-				}
-				SendDataToRobot(ThingSelf.ThingControl.Count, ThingSelf);
 
-			}
+
 		}
 		public string GetTextValue(TextBox txtboxName)
 		{
@@ -247,39 +226,13 @@ namespace IoTControl
 			Connections.SendForAllThings(((Button)sender).Tag.ToString());
 		}
 
-		private void SaveDataForConnectToThingworx(object sender, RoutedEventArgs e)
-		{
-			AddNewCommandToLog($"Изменены значения для подключения к thingworx: {(tb_appKey.Text, tb_serverIP.Text, Teams[TeamsList.SelectedIndex].Path)}");
-			Teams[TeamsList.SelectedIndex].ServerIP = tb_serverIP.Text;
-			Teams[TeamsList.SelectedIndex].Appkey = tb_appKey.Text;
-			DataForThingworx.ServerIP = tb_serverIP.Text;
-			DataForThingworx.AppKey = tb_appKey.Text;
-			DataForThingworx.SaveThx(tb_appKey.Text, tb_serverIP.Text, Teams[TeamsList.SelectedIndex].Path);
-		}
 
 		private async void SendNumberForThing(object sender, RoutedEventArgs e)
 		{
 			AddNewCommandToLog($"SendNumberForSelectedThing: {((Button)sender).Tag.ToString()}");
 			await Connections.Things[ThingsList.SelectedIndex].UDP.SendCommandAsync(((Button)sender).Tag.ToString());
 		}
-		private void SendCodeToThingworx(object sender, RoutedEventArgs e)
-		{
-			if (BarcodeList.SelectedIndex != -1)
-			{
-				_ = Thingworx.SendToThingworx(ListBarcode[(BarcodeList.SelectedIndex)], new Dictionary<string, string> { { "c", textBox_Barcode.Text } });
-				ListBarcode[(BarcodeList.SelectedIndex)].ThingMonitoring["c"] = textBox_Barcode.Text;
-				AddNewCommandToLog($"Код был отправлен: {textBox_Barcode.Text} на {ListBarcode[(BarcodeList.SelectedIndex)].name}");
 
-			}
-
-		}
-
-
-		private void Monitoring_ScrollChanged(object sender, ScrollChangedEventArgs e)
-		{
-			if(cb_Monitoring.IsChecked ?? false)
-				scroll_Monitoring.ScrollToBottom();
-		}
 
 		private void Log_ScrollChanged(object sender, ScrollChangedEventArgs e)
 		{
@@ -287,29 +240,7 @@ namespace IoTControl
 				scroll_log.ScrollToBottom();
 		}
 
-		private void ToggleReceiveToThingworx_Click(object sender, RoutedEventArgs e)
-		{
-			if (ToggleReceiveToThingworx.IsChecked ?? false)
-				AddNewCommandToLog("Данные будут отправляться на Thingworx");
-			else
-				AddNewCommandToLog("Данные не будут отправляться на Thingworx");
-
-			Debug.WriteLine(ToggleReceiveToThingworx.IsChecked);
-			Thingworx.SendToThx = ToggleReceiveToThingworx.IsChecked ?? false;
-		}
-
-		private void ToggleReceiveFromThingworx_Click(object sender, RoutedEventArgs e)
-		{
-			if (ToggleReceiveFromThingworx.IsChecked ?? false)
-				AddNewCommandToLog("Данные с Thingworx будут приходить");
-			else
-				AddNewCommandToLog("Данные с Thingworx не будут приходить");
-
-			Debug.WriteLine(ToggleReceiveFromThingworx.IsChecked);
-			Thingworx.ReceiveFromThx = ToggleReceiveFromThingworx.IsChecked ?? false;
-
-		}
-
+		
 		private void button_Visualization_Click(object sender, RoutedEventArgs e)
 		{
 			if (Connections.Things[ThingsList.SelectedIndex].visualizationIsOpen == false) 
@@ -342,5 +273,11 @@ namespace IoTControl
 				visualizationWindow.Show();
 			}
 		}
-    }
+
+		private void cb_paramMon_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+
+			ViewModelChart.selectedmotor = cb_paramMon.SelectedValue.ToString();
+		}
+	}
 }

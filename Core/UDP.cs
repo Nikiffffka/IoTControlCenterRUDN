@@ -33,31 +33,25 @@ namespace IoTControl.Core
 		{
 			try
 			{
+				Debug.WriteLine("I HATE HEARTLESS PEOPLE DO");
 				if (!active)
 				{
 					active = true;
 					UdpClient listener = new UdpClient(iInThread.port); // SocketException тут   КРЧ есть вариант сделать переменную которая будет хранить состояние(подключено ли сейчас или же занят ли порт сейчас) и делать if на это      PS. не помогает))))))
 					var response = await listener.ReceiveAsync();
+					Debug.WriteLine("GET");
+					Debug.WriteLine(response.ToString());
 					listener.Close();
 					Debug.WriteLine(response.RemoteEndPoint.Address.ToString());
 					active = false;
 					foreach (IoT i in Connections.Things)
 					{
-						Console.WriteLine("\nЧЗХ Я НЕ ПОНИМАЮ1  " + i.hostname + "   " + response.RemoteEndPoint.Address.ToString() + "\n");
 						if (i.hostname == response.RemoteEndPoint.Address.ToString())
 						{
-							Console.WriteLine("\nЧЗХ Я НЕ ПОНИМАЮ2  "+ i.hostname+"   " + response.RemoteEndPoint.Address.ToString()+ "\n");
-							Debug.WriteLine(response.Buffer);
-							var temp = Thingworx.Connect(response, i);
-							return (new Command(response.Buffer, temp.Result, i));
+							_ = RobotsMonData.Connect(response, i);
+							return (new Command(Encoding.UTF8.GetString(response.Buffer), i));
 						};
-					};  //Может быть поменять на что-то подобное     Главное чтобы это было оптимизировано 
-					/*if (response.RemoteEndPoint.Address.ToString() == iInThread.hostname)
-					{
-						Debug.WriteLine(response.Buffer);
-						var temp = Thingworx.Connect(response, iInThread);
-						return (new Command(response.Buffer, groupEP, temp.Result, iInThread));
-					}*/
+					};  
 					return null;
 				}
 				else { 
