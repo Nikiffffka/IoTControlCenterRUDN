@@ -182,8 +182,8 @@
     <Compile Include="Core\Command.cs" />
     <Compile Include="Core\Connections.cs" />
     <Compile Include="Core\IoT.cs" />
-    <Compile Include="Core\Area.cs" />
-    <Compile Include="Core\AreaLoadManager.cs" />
+    <Compile Include="Core\Team.cs" />
+    <Compile Include="Core\TeamLoadManager.cs" />
     <Compile Include="Core\UDP.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
