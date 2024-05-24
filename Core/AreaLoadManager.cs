@@ -46,7 +46,7 @@ namespace IoTControl.Core
             {
                 string messageBoxText = "Гайд по настройке IoT control center:\nВам нужно создать папку Areas в директории IoT control center, затем создать в нём файл _{название команды}.txt," +
 					" потом написать в нём:\nИнформацию об устройствах(вещах) с таким шаблоном:\n{type};{номер узла};{IPAddress Thing};{Port Thing};{Имя вещи}\nБазированные type - P, M, R2, C, T, B";
-                string caption = "Отсутствует папка Teams/Нарушена структура файла команды";
+                string caption = "Отсутствует папка Areas/Нарушена структура файла команды";
                 MessageBoxButton button = MessageBoxButton.OK;
                 MessageBoxImage icon = MessageBoxImage.Error;
                 MessageBoxResult result;
