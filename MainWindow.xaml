@@ -94,14 +94,8 @@
                     HorizontalAlignment="Left" Margin="0,75,0,0" Click="SendForAll"  Width="100" Content="S для всех" Tag="s" />
 
                 <TextBlock Text="Панель подключения" Margin="0,0,0,0" HorizontalAlignment="Left" Width="131" Height="20" VerticalAlignment="Top"/>
-
-                <TextBox x:Name="tb_serverIP" HorizontalAlignment="Left" Margin="95,24,0,0" TextWrapping="NoWrap" Text="ServerIP:port" VerticalAlignment="Top" Width="120"/>
-                <TextBox x:Name="tb_appKey" HorizontalAlignment="Left" Margin="95,47,0,0" TextWrapping="NoWrap" Text="AppKey" VerticalAlignment="Top" Width="120"/>
-                <!-- <Button x:Name="tb_gear" Style="{StaticResource ImageButton_Tool}" ToolTip="Синхронизация с базой" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="142,20,0,0"> <Image Source="/Sources/Icons/icons8-gear.png"/> </Button>-->
-
-                <Button Style ="{StaticResource CustomButton}" x:Name="button_SaveDataForConnectToThingworx" VerticalAlignment="Top"
-                HorizontalAlignment="Left" Margin="102,65,0,0"  Width="106" Content="Изменить"/>
                 <ComboBox Style="{StaticResource ComboBoxFlatStyle}" x:Name="TeamsList" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,24,0,0" SelectedIndex = "0" SelectionChanged="TeamsList_SelectionChanged" />
+            
             </Grid>
         </UI:CardHolder>
 

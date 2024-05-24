@@ -66,13 +66,11 @@ namespace IoTControl
 		}
 		private void TeamsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (ThingsList.SelectedItem != null) AddNewCommandToLog($"Выбрана команда: {TeamsList.SelectedItem}");
+			if (ThingsList.SelectedItem != null) AddNewCommandToLog($"Выбрана площадка: {TeamsList.SelectedItem}");
 
 			if (Connections.Things != null)	Connections.Close();
 
 			Connections.Things = Teams[TeamsList.SelectedIndex].IoTs;
-			tb_serverIP.Text = "Здесь должно быть только подключение к конкретной ячейке";
-			tb_appKey.Text = "Здесь должно быть только подключение к конкретной ячейке";
 
 			Connections.Start();
 
